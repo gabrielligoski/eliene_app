@@ -31,6 +31,11 @@ const Home = () => {
         setItemDetailsOpen(true)
     }
 
+    const addItemToCart = (item: string) => {
+        setSelectedItem(item)
+        setItemDetailsOpen(false)
+    }
+
     return (
         <View style={{flex: 1}}>
             <Modal
