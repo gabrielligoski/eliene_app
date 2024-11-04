@@ -3,10 +3,10 @@ import React from "react";
 import {Select, SelectItem, Text} from "@ui-kitten/components";
 import {Controller} from "react-hook-form";
 
-const Tecidos = ['Linhão', 'Suede', 'Couro', 'Outro']
-const Tamanhos = ['40x40', '40x50', '50x50', 'Outro']
+export const Tecidos = ['Linhão', 'Suede', 'Couro', 'Outro']
+export const Tamanhos = ['40x40', '40x50', '50x50', 'Outro']
 
-const ItemModalForm = ({selectedItem, control}: { selectedItem: string, control: any }) => {
+const ItemModalForm = ({selectedItem, control, errors}: { selectedItem: string, control: any, errors: any }) => {
     switch (selectedItem) {
         case 'saia-de-mesa':
         case 'almofada':
@@ -14,6 +14,9 @@ const ItemModalForm = ({selectedItem, control}: { selectedItem: string, control:
                 <Controller
                     name="tecido"
                     control={control}
+                    rules={{
+                        required: true,
+                    }}
                     render={({ field: {onChange, value} }) => <Select
                         onSelect={idx => onChange(idx)}
                         selectedIndex={value}
@@ -24,9 +27,13 @@ const ItemModalForm = ({selectedItem, control}: { selectedItem: string, control:
                         {Tecidos.map(tecido => <SelectItem key={tecido} title={<Text>{tecido}</Text>} />)}
                     </Select>}
                 />
+                {errors.tecido && <Text status='danger' appearance='alternative'>Escolha um tecido!</Text>}
                 <Controller
                     name="tamanho"
                     control={control}
+                    rules={{
+                        required: true,
+                    }}
                     render={({ field: {onChange, value} }) => <Select
                         onSelect={idx => onChange(idx)}
                         selectedIndex={value}
@@ -37,6 +44,7 @@ const ItemModalForm = ({selectedItem, control}: { selectedItem: string, control:
                         {Tamanhos.map(tamanho => <SelectItem key={tamanho} title={<Text>{tamanho}</Text>} />)}
                     </Select>}
                 />
+                {errors.tamanho && <Text status='danger' appearance='alternative'>Escolha um tamanho!</Text>}
             </View>)
         case 'travesseiro':
             return (<View>
@@ -52,6 +60,7 @@ const ItemModalForm = ({selectedItem, control}: { selectedItem: string, control:
                         {Tecidos.map(tecido => <SelectItem key={tecido} title={<Text>{tecido}</Text>} />)}
                     </Select>}
                 />
+                {errors.tecido && <Text status='danger' appearance='alternative'>Escolha um tecido!</Text>}
             </View>)
         default:
             return <></>

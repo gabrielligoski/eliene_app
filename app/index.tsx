@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import Card from "@/components/Card";
-import {Modal, Text, Button, Card as KittenCard} from "@ui-kitten/components";
-import ItemModalForm from "@/components/ItemModalForm";
-import {useForm} from "react-hook-form";
+import {Modal, Text, Button, Card as KittenCard, Select, SelectItem, Input} from "@ui-kitten/components";
+import ItemModalForm, {Tamanhos, Tecidos} from "@/components/ItemModalForm";
+import {Controller, useForm} from "react-hook-form";
+import {useAppDispatch} from "@/app/store/hooks";
+import {addToCart, ShoppingCartItem} from "@/app/store/shoppingCartReducer";
 
 const AlmofadaDescription = [
     'Escolha o tecido',
@@ -20,19 +22,27 @@ const SaiaDeMesaDescription = [
 ]
 
 const Home = () => {
-    const { register, handleSubmit, control } = useForm()
+    const dispatch = useAppDispatch()
+
+    const { formState:{ errors }, handleSubmit, control } = useForm()
     const [selectedItem, setSelectedItem] = useState<string>('');
     const [itemDetailsOpen, setItemDetailsOpen] = useState(false);
 
-    const onSubmit = (data: any) => console.log(data);
+    const onSubmit = (data: any) => addItemToCart(data);
 
     const handlePress = (item: string) => {
         setSelectedItem(item)
         setItemDetailsOpen(true)
     }
 
-    const addItemToCart = (item: string) => {
-        setSelectedItem(item)
+    const addItemToCart = (item: ShoppingCartItem) => {
+        const formatItem: ShoppingCartItem = {
+            quantidade: item.quantidade,
+            ...(item.tecido && {tecido: Tecidos[item.tecido.row],}),
+            ...(item.tamanho && {tamanho: Tamanhos[item.tamanho.row],}),
+            tipo: selectedItem,
+        }
+        dispatch(addToCart(formatItem))
         setItemDetailsOpen(false)
     }
 
@@ -44,12 +54,27 @@ const Home = () => {
                 onBackdropPress={() => setItemDetailsOpen(false)}
             >
                 <KittenCard>
-                    <ItemModalForm selectedItem={selectedItem} control={control}/>
+                    <ItemModalForm selectedItem={selectedItem} control={control} errors={errors} />
+                    <Controller
+                        name="quantidade"
+                        control={control}
+                        rules={{
+                            required: true,
+                        }}
+                        render={({field: {onChange, value}}) => <Input
+                            keyboardType={'numeric'}
+                            onChangeText={onChange}
+                            label={'Escolha a quantidade...'}
+                            value={value}
+                            style={{marginVertical: 6}}
+                        />}
+                    />
+                    {errors.quantidade && <Text status='danger' appearance='alternative'>Digite a quantidade!</Text>}
                     <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', padding: 6}}>
                         <Button appearance={'ghost'} onPress={() => setItemDetailsOpen(false)}>
                             Fechar
                         </Button>
-                        <Button onPress={() => setItemDetailsOpen(false)}>
+                        <Button onPress={handleSubmit(onSubmit)}>
                             Adicionar ao Carrinho
                         </Button>
                     </View>

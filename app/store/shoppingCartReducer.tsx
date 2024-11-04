@@ -3,8 +3,8 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 export interface ShoppingCartItem {
     quantidade: number
     tipo: string
-    tamanho: string
-    tecido: string
+    tamanho?: string
+    tecido?: string
 }
 
 const shoppingCartSlice = createSlice({
