@@ -17,11 +17,11 @@ const shoppingCartSlice = createSlice({
         },
         removeFromCart: (state, action: PayloadAction<ShoppingCartItem>) => {
             // @ts-ignore
-            state.remove(action.payload)
+            state.splice(state.indexOf(action.payload), 1)
         }
     }
 })
 
-export const { addToCart, removeFromCart } = shoppingCartSlice.actions
+export const {addToCart, removeFromCart} = shoppingCartSlice.actions
 
 export default shoppingCartSlice.reducer

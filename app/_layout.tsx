@@ -4,15 +4,19 @@ import {ApplicationProvider, Button, Icon, IconRegistry} from "@ui-kitten/compon
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import {Image} from "react-native";
 import {Provider} from 'react-redux'
-import React from "react";
+import React, {useState} from "react";
 import {store} from "@/app/store/store";
+import ShoppingCartModal from "@/components/ShoppingCartModal";
 
 export default function RootLayout() {
+    const [cartOpen, setCartOpen] = useState(false)
+
     return (
         <>
             <IconRegistry icons={EvaIconsPack}/>
             <Provider store={store}>
                 <ApplicationProvider {...eva} theme={eva.light}>
+                    <ShoppingCartModal cartOpen={cartOpen} setCartOpen={setCartOpen} />
                     <Stack>
                         <Stack.Screen options={{
                             headerTitle: (props) => <Image style={{
@@ -26,6 +30,7 @@ export default function RootLayout() {
                                     appearance='ghost'
                                     status='danger'
                                     accessoryLeft={<Icon name='shopping-cart'/>}
+                                    onPress={() => setCartOpen(true)}
                                 />
                             ),
                         }} name="index"/>

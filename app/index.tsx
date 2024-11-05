@@ -24,7 +24,7 @@ const SaiaDeMesaDescription = [
 const Home = () => {
     const dispatch = useAppDispatch()
 
-    const { formState:{ errors }, handleSubmit, control } = useForm()
+    const { formState:{ errors }, handleSubmit, control, reset } = useForm()
     const [selectedItem, setSelectedItem] = useState<string>('');
     const [itemDetailsOpen, setItemDetailsOpen] = useState(false);
 
@@ -35,7 +35,7 @@ const Home = () => {
         setItemDetailsOpen(true)
     }
 
-    const addItemToCart = (item: ShoppingCartItem) => {
+    const addItemToCart = (item: any) => {
         const formatItem: ShoppingCartItem = {
             quantidade: item.quantidade,
             ...(item.tecido && {tecido: Tecidos[item.tecido.row],}),
@@ -43,6 +43,7 @@ const Home = () => {
             tipo: selectedItem,
         }
         dispatch(addToCart(formatItem))
+        reset()
         setItemDetailsOpen(false)
     }
 
