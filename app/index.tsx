@@ -37,9 +37,9 @@ const Home = () => {
 
     const addItemToCart = (item: any) => {
         const formatItem: ShoppingCartItem = {
-            quantidade: item.quantidade,
-            ...(item.tecido && {tecido: Tecidos[item.tecido.row],}),
-            ...(item.tamanho && {tamanho: Tamanhos[item.tamanho.row],}),
+            quantidade: item?.quantidade,
+            ...(item?.tecido?.row && {tecido: Tecidos[item.tecido.row],}),
+            ...(item?.tamanho?.row && {tamanho: Tamanhos[item.tamanho.row],}),
             tipo: selectedItem,
         }
         dispatch(addToCart(formatItem))

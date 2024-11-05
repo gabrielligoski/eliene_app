@@ -26,7 +26,7 @@ const Card = ({imageSource, description, title, subTitle, onPress, style}: any) 
             }} source={imageSource}
                    alt="Almofadas"/>
             <View>
-                <Text style={{padding: 6}} category='h2'>
+                <Text style={{padding: 6}} category='h5'>
                     {title}
                 </Text>
                 <Text category='s2' style={{paddingLeft: 6, marginBottom: 12}}>

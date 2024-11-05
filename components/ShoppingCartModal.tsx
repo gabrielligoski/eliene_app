@@ -10,10 +10,11 @@ const ShoppingCartModal = ({cartOpen, setCartOpen}: any) => {
     const shoppingCart = useAppSelector(state => state.shoppingCart)
 
     const SendMessage = () => {
-        Linking.openURL(`https://wa.me/5506496458073?text="Olá, Eliene! Estou interessada(o) em comprar,
+        Linking.openURL(`https://wa.me/5506496458073?text=Olá, Eliene! Estou interessada(o) em comprar,
         \n${shoppingCart.map((item: ShoppingCartItem) => `${item.quantidade} ${item.tipo}` +
-            (item.tecido && `, tecido: ${item.tecido}`) +
-            (item.tamanho && `, tamanho: ${item.tamanho}`) + "\n")}"`)
+            item.tecido ? `, tecido: ${item.tecido}` : '' +
+            item.tamanho ? `, tamanho: ${item.tamanho}`: '' +
+            "\n")}`)
         setCartOpen(false)
     }
 

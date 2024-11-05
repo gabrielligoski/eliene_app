@@ -51,11 +51,15 @@ const ItemModalForm = ({selectedItem, control, errors}: { selectedItem: string, 
                 <Controller
                     name="tecido"
                     control={control}
+                    rules={{
+                        required: true,
+                    }}
                     render={({ field: {onChange, value} }) => <Select
                         onSelect={idx => onChange(idx)}
                         selectedIndex={value}
                         label={'Escolha seu tecido...'}
-                        value={Tecidos[value.row]}
+                        value={value && Tecidos[value.row]}
+                        style={{marginVertical: 6}}
                     >
                         {Tecidos.map(tecido => <SelectItem key={tecido} title={<Text>{tecido}</Text>} />)}
                     </Select>}
